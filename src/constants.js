@@ -1,1 +1,3 @@
-export const DB_NAME = "playtube";
+const DB_NAME = "playtube";
+
+export default DB_NAME;
