@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 const userSchema = new Schema(
   {
@@ -16,7 +16,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      lowercase: true,
+      lowecase: true,
       trim: true,
     },
     fullName: {
@@ -26,11 +26,11 @@ const userSchema = new Schema(
       index: true,
     },
     avatar: {
-      type: String,
+      type: String, // cloudinary url
       required: true,
     },
     coverImage: {
-      type: String,
+      type: String, // cloudinary url
     },
     watchHistory: [
       {
@@ -40,19 +40,21 @@ const userSchema = new Schema(
     ],
     password: {
       type: String,
-      required: [true, "password is required"],
+      required: [true, "Password is required"],
     },
     refreshToken: {
-      type: true,
+      type: String,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified(password)) return next();
+  if (!this.isModified("password")) return next();
 
-  this.password = bcrypt.hash(this.password, 10);
+  this.password = await bcrypt.hash(this.password, 10);
   next();
 });
 
