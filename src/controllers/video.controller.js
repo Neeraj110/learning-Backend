@@ -164,6 +164,7 @@ const getVideoById = asyncHandler(async (req, res) => {
         _id: new mongoose.Types.ObjectId(videoId),
       },
     },
+    // get all like on video
     {
       $lookup: {
         from: "likes",
@@ -172,6 +173,8 @@ const getVideoById = asyncHandler(async (req, res) => {
         as: "likes",
       },
     },
+
+    // get all comments
     {
       $lookup: {
         from: "comments",
@@ -180,6 +183,8 @@ const getVideoById = asyncHandler(async (req, res) => {
         as: "comments",
       },
     },
+
+    // get owner details
     {
       $lookup: {
         from: "users",
@@ -214,7 +219,7 @@ const getVideoById = asyncHandler(async (req, res) => {
           {
             $project: {
               username: 1,
-              "avatar.url": 1,
+              avatar: 1,
               subscribersCount: 1,
               isSubscribed: 1,
             },
